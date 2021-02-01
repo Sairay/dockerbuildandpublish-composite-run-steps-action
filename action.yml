@@ -36,7 +36,7 @@ runs:
     - run: export FULL_IMAGE_NAME="$jfrog-url/$jfrog-reponame/$IMAGE_NAME"
       shell: bash
     - id: image-name-tag-generator
-      run: echo "::set-output name = fullname::${FULL_IMAGE_NAME}"
+      run: echo "::set-output name=fullname::${FULL_IMAGE_NAME}"
       shell: bash
     - run: echo "::endgroup::"
       shell: bash
