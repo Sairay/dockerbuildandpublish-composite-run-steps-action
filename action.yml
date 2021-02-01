@@ -33,7 +33,7 @@ runs:
       shell: bash
     - run: export IMAGE_NAME="$repostory-name:$tag"
       shell: bash
-    - run: export FULL_IMAGE_NAME="$jfrog-url/$jfrog-reponame/$IMAGE_NAME"
+    - run: export FULL_IMAGE_NAME="${{inputs.jfrog-url}}/$${{inputs.jfrog-reponame}}/$IMAGE_NAME"
       shell: bash
     - id: image-name-tag-generator
       run: echo "::set-output name=fullname::${FULL_IMAGE_NAME}"
@@ -42,7 +42,7 @@ runs:
       shell: bash
     - run: echo "::group::login jfrog repository"
       shell: bash
-    - run: echo $jfrog-access-token | docker login --username $jfrog-username --password-stdin $jfrog-url
+    - run: echo $${{inputs.jfrog-access-token}} | docker login --username $${{inputs.jfrog-username}} --password-stdin $${{inputs.jfrog-url}}
       shell: bash
     - run: echo "::endgroup::"
       shell: bash
