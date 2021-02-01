@@ -1,2 +1,0 @@
-name: "docker_build_and_publish_to_jfrog"
-description: "build docker and publish to jfrog repostiroy"
