@@ -4,6 +4,24 @@ inputs:
   prebuilt-image-name:
     description: "the image name which need to import into build"
     required: false
+  repostory-name:
+    description: "the name of the repository"
+    required: true
+  tag:
+    description: "the trg of the image"
+    required: true
+  jfrog-url:
+    description: "jfrog repository url"
+    required: true
+  jfrog-reponame:
+    description: "jfrog repository repo name"
+    required: true
+  jfrog-username:
+    description: "jfrog access username"
+    required: true
+  jfrog-access-token:
+    description: "jfrog access token"
+    required: true
 outputs:
   full-image-name:
     description: "the image name which built successfully"
@@ -13,9 +31,9 @@ runs:
   steps: 
     - run: echo "::group::setup image name and tag"
       shell: bash
-    - run: export IMAGE_NAME="$(basename $(echo ${{github.repository}})):$(date +%s)"
+    - run: export IMAGE_NAME="$repostory-name:$tag"
       shell: bash
-    - run: export FULL_IMAGE_NAME="${{secrets.JF_ARTIFACTORY_URL}}/${{secrets.JF_ARTIFACTORY_REPONAME}}/$IMAGE_NAME"
+    - run: export FULL_IMAGE_NAME="$jfrog-url/$jfrog-reponame/$IMAGE_NAME"
       shell: bash
     - id: image-name-tag-generator
       run: echo "::set-output name = fullname::${FULL_IMAGE_NAME}"
@@ -24,7 +42,7 @@ runs:
       shell: bash
     - run: echo "::group::login jfrog repository"
       shell: bash
-    - run: echo ${{secrets.JF_ARTIFACTORY_ACCESS_TOKEN}} | docker login --username ${{secrets.JF_ARTIFACTORY_USERNAME}} --password-stdin ${{secrets.JF_ARTIFACTORY_URL}}
+    - run: echo $jfrog-access-token | docker login --username $jfrog-username --password-stdin $jfrog-url
       shell: bash
     - run: echo "::endgroup::"
       shell: bash
