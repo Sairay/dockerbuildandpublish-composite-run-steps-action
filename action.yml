@@ -18,7 +18,7 @@ runs:
     - run: export FULL_IMAGE_NAME="${{secrets.JF_ARTIFACTORY_URL}}/${{secrets.JF_ARTIFACTORY_REPONAME}}/$IMAGE_NAME"
       shell: bash
     - id: image-name-tag-generator
-      run: echo "::set-output full-image-name = fullname::${FULL_IMAGE_NAME}"
+      run: echo "::set-output name = fullname::${FULL_IMAGE_NAME}"
       shell: bash
     - run: echo "::endgroup::"
       shell: bash
