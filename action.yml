@@ -31,7 +31,7 @@ runs:
   steps: 
     - run: echo "::group::setup image name and tag"
       shell: bash
-    - run: export IMAGE_NAME="$repostory-name:$tag"
+    - run: export IMAGE_NAME="${{inputs.repostory-name}}:${{inputs.tag}}"
       shell: bash
     - run: export FULL_IMAGE_NAME="${{inputs.jfrog-url}}/${{inputs.jfrog-reponame}}/$IMAGE_NAME"
       shell: bash
