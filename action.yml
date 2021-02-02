@@ -31,11 +31,11 @@ runs:
   steps: 
     - run: echo "::group::setup image name and tag"
       shell: bash
-    - run: IMAGE_NAME="${{inputs.repostory-name}}:${{inputs.tag}}"
+    - run: echo '::set-env name=IMAGE_NAME::${{inputs.repostory-name}}:${{inputs.tag}}'
       shell: bash
     - run: echo "imagename=${IMAGE_NAME}"
       shell: bash
-    - run: FULL_IMAGE_NAME="${{inputs.jfrog-url}}/${{inputs.jfrog-reponame}}/$IMAGE_NAME"
+    - run: echo '::set-env name=FULL_IMAGE_NAME::${{inputs.jfrog-url}}/${{inputs.jfrog-reponame}}/$IMAGE_NAME'
       shell: bash
     - run: echo "fullimagename=${FULL_IMAGE_NAME}"
       shell: bash
