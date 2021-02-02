@@ -33,6 +33,8 @@ runs:
       shell: bash
     - run: export IMAGE_NAME="${{inputs.repostory-name}}:${{inputs.tag}}"
       shell: bash
+    - run: echo "imagename=$IMAGE_NAME"
+      shell: bash
     - run: export FULL_IMAGE_NAME="${{inputs.jfrog-url}}/${{inputs.jfrog-reponame}}/$IMAGE_NAME"
       shell: bash
     - id: image-name-tag-generator
@@ -46,7 +48,7 @@ runs:
       shell: bash
     - run: echo "::endgroup::"
       shell: bash
-    - run: echo "::group::build docker file"
+    - run: echo "::group::build docker file with tag $IMAGE_NAME"
       shell: bash
     - run: docker build . --file Dockerfile --build-arg PRE_IMAGE_NAME=${{inputs.prebuilt-image-name}} --build-arg GIT_TAG=$IMAGE_NAME --build-arg BUILT_DATE=$(TZ=":Pacific/Auckland" date +%F-%T) --tag $IMAGE_NAME       
       shell: bash
