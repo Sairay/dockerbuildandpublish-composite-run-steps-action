@@ -31,16 +31,17 @@ runs:
   steps: 
     - run: echo "::group::setup image name and tag"
       shell: bash
-    - run: echo '::set-env name=IMAGE_NAME::${{inputs.repostory-name}}:${{inputs.tag}}'
+    - id: generate-image-name
+      run: echo "IMAGE_NAME=${{inputs.repostory-name}}:${{inputs.tag}}" >> $GITHUB_ENV
       shell: bash
-    - run: echo "imagename=${IMAGE_NAME}"
+    - run: echo "imagename=${{env.IMAGE_NAME}}"
       shell: bash
-    - run: echo '::set-env name=FULL_IMAGE_NAME::${{inputs.jfrog-url}}/${{inputs.jfrog-reponame}}/$IMAGE_NAME'
+    - run: echo "FULL_IMAGE_NAME::${{inputs.jfrog-url}}/${{inputs.jfrog-reponame}}/${{env.IMAGE_NAME}}" >> $GITHUB_ENV
       shell: bash
-    - run: echo "fullimagename=${FULL_IMAGE_NAME}"
+    - run: echo "fullimagename=${{env.FULL_IMAGE_NAME}}"
       shell: bash
     - id: image-name-tag-generator
-      run: echo "::set-output name=fullname::${FULL_IMAGE_NAME}"
+      run: echo "::set-output name=fullname::${{env.FULL_IMAGE_NAME}}"
       shell: bash
     - run: echo "::endgroup::"
       shell: bash
@@ -52,15 +53,15 @@ runs:
       shell: bash
     - run: echo "::group::build docker file with tag $IMAGE_NAME"
       shell: bash
-    - run: docker build . --file Dockerfile --build-arg PRE_IMAGE_NAME=${{inputs.prebuilt-image-name}} --build-arg GIT_TAG=$IMAGE_NAME --build-arg BUILT_DATE=$(TZ=":Pacific/Auckland" date +%F-%T) --tag $IMAGE_NAME       
+    - run: docker build . --file Dockerfile --build-arg PRE_IMAGE_NAME=${{inputs.prebuilt-image-name}} --build-arg GIT_TAG=${{env.IMAGE_NAME}} --build-arg BUILT_DATE=$(TZ=":Pacific/Auckland" date +%F-%T) --tag ${{env.IMAGE_NAME}}       
       shell: bash
     - run: echo "::endgroup::"
       shell: bash
     - run: echo "::group::push to the jfrog repository"
       shell: bash
-    - run: docker tag $IMAGE_NAME $FULL_IMAGE_NAME 
+    - run: docker tag ${{env.IMAGE_NAME}} ${{env.FULL_IMAGE_NAME}} 
       shell: bash
-    - run: docker push $FULL_IMAGE_NAME
+    - run: docker push ${{env.FULL_IMAGE_NAME}}
       shell: bash
     - run: echo "::endgroup::"
       shell: bash
