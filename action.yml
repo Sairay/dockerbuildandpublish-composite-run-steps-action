@@ -31,6 +31,9 @@ runs:
   steps: 
     - run: echo "::group::setup image name and tag"
       shell: bash
+    - id: init
+      run: echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
+      shell: bash
     - id: generate-image-name
       run: echo "IMAGE_NAME=${{inputs.repostory-name}}:${{inputs.tag}}" >> $GITHUB_ENV
       shell: bash
