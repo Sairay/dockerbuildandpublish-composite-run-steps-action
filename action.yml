@@ -62,7 +62,7 @@ runs:
       shell: bash
     - run: echo "::group::push to the jfrog repository"
       shell: bash
-    - run: docker tag ${{inputs.jfrog-reponame}}/${{env.IMAGE_NAME}} ${{env.FULL_IMAGE_NAME}} 
+    - run: docker tag ${{env.IMAGE_NAME}} ${{env.FULL_IMAGE_NAME}} 
       shell: bash
     - run: docker push ${{env.FULL_IMAGE_NAME}}
       shell: bash
